@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stress Relief Game</title>
+
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: #eef2f3;
+    }
+
+    #container {
+      position: relative;
+      width: 700px;
+      height: 350px;
+      margin: 40px auto;
+      border: 2px solid #333;
+      overflow: hidden;
+      background: white;
+    }
+
+    #target {
+      position: absolute;
+      right: 40px;
+      top: 80px;
+      width: 140px;
+    }
+
+    .arrow, .sword, .glove {
+      position: absolute;
+      left: -100px;
+      width: 80px;
+    }
+
+    .arrow { top: 120px; }
+    .sword { top: 180px; }
+    .glove { top: 130px; }
+
+    button {
+      margin: 10px;
+      padding: 12px 22px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background: #333;
+      color: white;
+    }
+
+    button:hover {
+      background: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Stress Relief Simulator 🎯</h2>
+
+<div id="container">
+  <img id="target" 
+  src="https://raw.githubusercontent.com/jigarb256/StressRelief/main/8_orgid_d58bbc16-ebb7-428f-8da5-65a790b07385.jpg">
+</div>
+
+<button onclick="shootArrow()">🏹 Arrow</button>
+<button onclick="throwSword()">⚔️ Sword</button>
+<button onclick="startPunch()">🥊 Punch</button>
+<button onclick="stopPunch()">⛔ Stop Punch</button>
+
+<script>
+const container = document.getElementById("container");
+let punching = false;
+
+// Arrow
+function shootArrow() {
+  createMovingObject(
+    "https://raw.githubusercontent.com/jigarb256/StressRelief/main/Arrow%20Throw.png",
+    "arrow",
+    1000
+  );
+}
+
+// Sword
+function throwSword() {
+  createMovingObject(
+    "https://raw.githubusercontent.com/jigarb256/StressRelief/main/1000_F_222704862_DBS3SFUabi62zbVTC4qg8IDw6NexDp0H.jpg",
+    "sword",
+    700
+  );
+}
+
+// Punch loop
+function startPunch() {
+  if (punching) return;
+  punching = true;
+  punchLoop();
+}
+
+function stopPunch() {
+  punching = false;
+}
+
+function punchLoop() {
+  if (!punching) return;
+
+  createMovingObject(
+    "https://raw.githubusercontent.com/jigarb256/StressRelief/main/boxing-glove.svg",
+    "glove",
+    300
+  );
+
+  setTimeout(punchLoop, 200);
+}
+
+// Animation
+function createMovingObject(src, className, duration) {
+  const el = document.createElement("img");
+  el.src = src;
+  el.className = className;
+
+  container.appendChild(el);
+
+  let start = null;
+  const distance = 650;
+
+  function animate(timestamp) {
+    if (!start) start = timestamp;
+    let progress = timestamp - start;
+
+    let move = Math.min((progress / duration) * distance, distance);
+    el.style.transform = `translateX(${move}px)`;
+
+    if (progress < duration) {
+      requestAnimationFrame(animate);
+    } else {
+      el.remove();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+</script>
+
+</body>
+  </html>
